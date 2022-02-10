@@ -1,21 +1,50 @@
 import { gql } from 'apollo-server-azure-functions';
-export default /* GraphQL */ gql`
-# GraphQL Schema
-type Quote {
-  id: ID
-  source: String
-  text: String
+export const typeDefs = gql`
+type Query{
+    getRoutes:[Route]
+    getRoute(route:String,stop:String):[Route]
+    getStops:[Stop]
+    getStop(stop:String,route:String):[Stop]
+    getProfile:[Profile]
 }
-input CreateQuoteInput {
-  source: String!
-  text: String!
+
+enum PROVIDER{
+    KMB
 }
-type Query {
-  listQuotes: [Quote]!
+
+type Route{
+    id:ID!
+    provider:PROVIDER!
+    route:String
+    bound:String
+    service_type:String
+    orig_en:String
+    orig_sc:String
+    orig_tc:String
+    dest_en:String
+    dest_tc:String
+    dest_sc:String
+    stops:[Stop]
 }
-type Mutation {
-  createQuote(input: CreateQuoteInput!): Quote
-  deleteQuote(id: ID!): Quote 
+
+type Stop{
+    stop:ID!
+    provider:PROVIDER!
+    route(route:String):Route
+    bound:String
+    service_type:String
+    seq:String
+    name_en:String
+    name_tc:String
+    name_sc:String
+    routes:[Route]
 }
-# End Schema
-`
+
+type Profile{
+    id:ID!
+    name:String
+    route:String
+    bound:String
+    stop:String
+}
+`;
