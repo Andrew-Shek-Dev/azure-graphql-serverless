@@ -12,12 +12,12 @@
   "dependencies": {
     "@types/moment-timezone": "^0.5.30",
     "apollo-server-azure-functions": "^3.6.2",
-    "azure-functions-core-tools": "3",
     "graphql": "^16.2.0",
     "moment-timezone": "^0.5.34"
   },
   "devDependencies": {
     "@azure/functions": "^1.2.3",
+    "azure-functions-core-tools": "3",
     "typescript": "^4.0.0"
   }
 }
