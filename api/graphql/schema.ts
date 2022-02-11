@@ -5,6 +5,7 @@ type Query{
     getRoute(route:String,stop:String):[Route]
     getStops:[Stop]
     getStop(stop:String,route:String):[Stop]
+    getNextETA(route:String,stop:String):[ETA]
     getProfile:[Profile]
 }
 
@@ -38,6 +39,15 @@ type Stop{
     name_tc:String
     name_sc:String
     routes:[Route]
+}
+
+type ETA{
+    seq:Int!
+    co:PROVIDER!
+    bound:String
+    route:Route!
+    stop:Stop!
+    eta:String
 }
 
 type Profile{
