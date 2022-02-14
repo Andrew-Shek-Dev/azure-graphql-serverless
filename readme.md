@@ -78,6 +78,7 @@ git checkout development
 無Frontend Framework，所以無需build folder。請留空。
 ![5](/img/5.png "5")
 
+
 如果成功會出現。。。
 ![7](/img/7.png "7")
 
@@ -174,10 +175,25 @@ yarn start
 打開Azure Portal找URL。Login Azure Portal > ?? > ?? 
 
 ## 設計Chatbot
+今次選用Bot Framework Composer設計Chatbot，因為使用簡單直接，唔需要太多編程技巧。請到[官方網站](https://github.com/microsoft/BotFramework-Composer)下載Bot Framework Composer先。
+
+安裝完成後，進入以介面：
+![UI](/img/ui.png "UI")
+
+建立新Chatbot項目，選擇C#，Empty Bot。
+![Create Project](/img/chatbot_project.png "Create Project")
+
+輸入Chatbot項目名稱：
+![Create Project Name](/img/name.png "Create Project Name")
+
+成功後，進入建立Chatbot介面：
+
+
+> Azure知識分享：Dialog and Trigger
+> ---
+> 
+
 
 ## 部署Chatbot
 
 ## 測試
-
-## 參考
-https://medium.com/@bjohnson.io/add-a-serverless-graphql-api-to-your-azure-static-web-app-ed8c085044e8
