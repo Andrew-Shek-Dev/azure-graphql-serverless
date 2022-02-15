@@ -67,6 +67,7 @@ git checkout development
 ![1](/img/1.png "1")
 
 選擇地區
+
 ![2](/img/2.png "2")
 
 選擇Custom，因為今次不會用任何Frontend Framework。
