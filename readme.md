@@ -188,13 +188,141 @@ yarn start
 ![Create Project Name](/img/name.png "Create Project Name")
 
 成功後，進入建立Chatbot介面：
+![Design UI](/img/design_ui.png "Design UI")
 
-
-> Azure知識分享：Dialog and Trigger
+> Azure知識分享：Dialog，Trigger and Recognizer
 > ---
-> 
+> Dialog是泛指對話中「一組」有「次序」、「連續」動作，包括，回應使用者、執行Web API、執行運算、儲存資料等。。。。最終可以完成一個目的，例如，得到一個資料，該資料會交俾下一個Dialog。一個Dialog接另一個Dialog，直至對話終結。
+>
+> 此Trigger不同Azure Function Trigger。要做到Dialog接Dialog，式者去邊個Dialog，需要發動條件，而發動條件就是Trigger，例如，Intent recognized，Trigger會看使用者回應內容(一律稱為Intent)決定去邊一個Dialog。詳細請參閱此[文件](https://docs.microsoft.com/en-us/composer/concept-events-and-triggers?tabs=v2x)。
+>
+> 但是，各位都會問一個問題。因為每次都要看使用者回應決定下一個Dialog，所以developers需要寫好多可能組合。語言博大精深，千變萬化。Developers逐個Case處理會比較低效率。Recognizer是幫我地解決問題。
+>
+> Recognizer是會使用不同方法「解讀」使用者回應，再根據分析結果決定下一個Dialog，例如，利用Regular Expression/[LUIS](https://www.luis.ai/) 抽出關鍵詞。今次Regular Expression Recognizer會被使用做例子。
 
+### **介面介紹**：
+
+![Left Panel](/img/left_panel.png "Left Panel")
+
+Greeting是一個Dialog其中一個Action，佢會主動同使用者打招呼。Unknown intent是處理Chatbot未能理解的內容，例如，回應"Sorry, I didn't get that."。
+
+### **深入了解Action，Greeting**
+![Greeting](/img/greeting.png "Greeting")
+
+簡單說就是同現時所有登入的使用者打招呼。
+每一個Box有不同既功能。
+
+笫一個，是一個Loop Box，取得所有現時新登入的使用者。
+
+笫二個，是一個if...else... Box, 核查下是唔是新使用者登入，是就同使用者打招呼。
+
+笫三個，回應使用者一個Message俾使用者。
+
+大家可以點擊＋加入不同Action入整個流程任何位置。使用方法會在以下部分慢慢介紹。
+
+![Add Action](/img/add_action.png "Add Action")
+
+### **Bus Bot完整流程**
+![Chat Flow](/img/chat_flow.jpeg "ChatFlow")
+
+Step 1: 打招呼，要求輸入巴士路線。更改Greeting Action的Response Message（Bus Bot完整中的Box 1）。
+
+![Step 1](/img/bot_step1.png "Step 1")
+
+Step 2: 設定Dialog使用Regular Expression Recognizer
+
+![Step 2](/img/bot_step2.png "Step 2")
+
+Step 3:建立新Dialog, get_arrival_time ,處理Bus Bot完整中的Box 3，4，5及6 。
+
+![Add Dialog](/img/add_dialog.png "Add Dialog")
+
+<table align="center">
+<tr>
+<td  align="center">
+
+![Flow 1](/img/flow_step1.png "Flow 1")
+
+</td>
+</tr>
+<tr>
+<td  align="center">
+
+![Flow 2](/img/flow_step2.png "Flow 2")
+
+</td>
+</tr>
+</table>
+
+大家可以點擊＋加入不同Action，順序加入以下Action：
+
+1. 問使用者取得巴士站名。
+
+![S3](/img/s3.png "S3")
+
+2. 問GraphQL Server取得巴士到站時間。
+
+![S4](/img/s4.png "S4")
+
+3. 暫時儲存到站時間入Properties，用以下一步轉換時間/回應使用者。
+
+![S5](/img/s5.png "S5")
+
+4. 回應使用者
+
+![S6](/img/s6.png "S6")
+
+5. 最後，如何由bus_bot trigger get_arrival_time?
+
+![Add Trigger](/img/add_trigger.png "Add Trigger")
+
+
+"\d+\w*"是Regular Expression，意思是數字開頭（1個或以上），後面是字母（0個或以上）。只要符合該條件就可以執行下一個dialog，get_arrival_time。
+
+![Add Trigger 2](/img/add_trigger_2.png "Add Trigger 2")
+
+下一步，設定打開get_arrival_time dialog
+
+![Add Trigger 3](/img/add_trigger_3.png "Add Trigger 3")
+
+![Add Trigger 4](/img/add_trigger_4.png "Add Trigger 4")
+
+完整得Trigger成品(user.route儲存使用者提供的巴士路線備用):
+
+![Final Trigger](/img/final_trigger.png "Final Trigger")
+
+## 測試Chatbot
+
+下戴及安裝[Bot Framework Emulator](https://github.com/microsoft/BotFramework-Emulator)進行本地測試。執行Bot Framework Emulator。
+
+是Bot Framework Composer點擊右上角的"Start Bot"，開始進行測試。
+
+![Test 1](/img/test_1.png "Test 1")
+
+點擊"Test in Emulator", 打開Chat room。
+![Test 2](/img/test_2.png "Test 2")
+
+盡情測試吧！
+![Test 3](/img/test_3.png "Test 3")
 
 ## 部署Chatbot
+測試成功之後就部署上Azure，同人開心分享！由於編幅有限，而且過程簡單，所以用圖表達完整流程。
 
-## 測試
+![P1](/img/p_1.png "P1")
+![P2](/img/p_2.png "P2")
+![P3](/img/p_3.png "P3")
+![P4](/img/p_4.png "P4")
+![P5](/img/p_5.png "P5")
+
+**注意！必須uncheck所有optional resources，否則檔案過大可能造成部署失敗。**
+![P6](/img/p_6.png "P6")
+![P7](/img/p_7.png "P7")
+![P8](/img/p_8.png "P8")
+![P9](/img/p_9.png "P9")
+![P10](/img/p_10.png "P10")
+![P11](/img/p_11.png "P11")
+
+等待完成就可以了。
+
+## 完成！
+![Production](/img/production_test.png "Production")
